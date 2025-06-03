@@ -8,14 +8,18 @@ import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.ticks.TickPriority;
 
@@ -66,5 +70,35 @@ public class LockedFluidPipeBlock extends FluidPipeBlock {
                 .updateBlockState(equivalentPipe, firstFound, null, world, pos));
         FluidTransportBehaviour.loadFlows(world, pos);
         return InteractionResult.SUCCESS;
+    }
+
+    public BlockState createBlockStateFromFluidPipe(BlockState blockState) {
+        // Note: Get variants here for compat?
+        return transferFluidPipeProperties(blockState, defaultBlockState());
+    }
+
+    public static BlockState transferFluidPipeProperties(BlockState from, BlockState to) {
+        for (Direction d : Iterate.directions) {
+            BooleanProperty property = PROPERTY_BY_DIRECTION.get(d);
+            to = to.setValue(property, from.getValue(property));
+        }
+        BooleanProperty property = BlockStateProperties.WATERLOGGED;
+        to = to.setValue(property, from.getValue(property));
+        return to;
+    }
+
+    public static void lockPipe(BlockState blockState, Level level, BlockPos pos) {
+        // Note: Get variants here for compat?
+        FluidTransportBehaviour.cacheFlows(level, pos);
+        level.setBlockAndUpdate(pos, ParallelPipes.LOCKED_FLUID_PIPE_BLOCK.get().createBlockStateFromFluidPipe(blockState));
+        FluidTransportBehaviour.loadFlows(level, pos);
+        playLockingSound(level, pos);
+    }
+
+    @SuppressWarnings("deprecation")
+    public static void playLockingSound(Level level, BlockPos pos) {
+        BlockState newState = level.getBlockState(pos);
+        SoundType soundType = newState.getSoundType();
+        level.playSound(null, pos, soundType.getPlaceSound(), SoundSource.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
     }
 }

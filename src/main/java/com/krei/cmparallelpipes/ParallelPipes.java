@@ -6,10 +6,11 @@ import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
+import com.simibubi.create.foundation.item.CombustibleItem;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import org.slf4j.Logger;
 
@@ -20,6 +21,7 @@ import net.neoforged.fml.ModContainer;
 
 import net.neoforged.fml.common.Mod;
 
+import static com.simibubi.create.AllTags.commonItemTag;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
@@ -35,6 +37,7 @@ public class ParallelPipes
             .create(MODID)
             .defaultCreativeTab(AllCreativeModeTabs.BASE_CREATIVE_TAB.getKey());
 
+    // Note: Add pipe variants here if they exist for compat. Add a builder transform or some shit.
     @SuppressWarnings("deprecation")
     public static final BlockEntry<LockedFluidPipeBlock> LOCKED_FLUID_PIPE_BLOCK = REGISTRATE.block("locked_fluid_pipe", LockedFluidPipeBlock::new)
             .initialProperties(SharedProperties::copperMetal)
@@ -52,8 +55,14 @@ public class ParallelPipes
             .validBlocks(LOCKED_FLUID_PIPE_BLOCK)
             .register();
 
+    public static final ItemEntry<PipeLockerItem> PIPE_LOCKER_ITEM = REGISTRATE.item("pipe_locker", PipeLockerItem::new)
+            .properties(p -> p.component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true))
+            .register();
+
     public ParallelPipes(IEventBus modEventBus, ModContainer modContainer)
     {
         REGISTRATE.registerEventListeners(modEventBus);
     }
+
+    // TODO: outline renderer
 }

@@ -1,3 +1,4 @@
 {
-  "block.cmparallelpipes.locked_fluid_pipe": "Locked Fluid Pipe"
+  "block.cmparallelpipes.locked_fluid_pipe": "Locked Fluid Pipe",
+  "item.cmparallelpipes.pipe_locker": "Pipe Locker"
 }
