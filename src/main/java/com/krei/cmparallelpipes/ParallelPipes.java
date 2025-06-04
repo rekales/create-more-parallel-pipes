@@ -1,17 +1,20 @@
 package com.krei.cmparallelpipes;
 
 import com.simibubi.create.AllCreativeModeTabs;
+import com.simibubi.create.AllPartialModels;
+import com.simibubi.create.CreateClient;
 import com.simibubi.create.content.fluids.PipeAttachmentModel;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
-import com.simibubi.create.foundation.item.CombustibleItem;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -21,7 +24,6 @@ import net.neoforged.fml.ModContainer;
 
 import net.neoforged.fml.common.Mod;
 
-import static com.simibubi.create.AllTags.commonItemTag;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
@@ -53,16 +55,28 @@ public class ParallelPipes
     public static final BlockEntityEntry<FluidPipeBlockEntity> LOCKED_FLUID_PIPE_BLOCK_ENTITY = REGISTRATE
             .blockEntity("fixed_fluid_pipe", FluidPipeBlockEntity::new)
             .validBlocks(LOCKED_FLUID_PIPE_BLOCK)
+            .renderer(() -> LockedFluidPipeRenderer::new)
             .register();
 
     public static final ItemEntry<PipeLockerItem> PIPE_LOCKER_ITEM = REGISTRATE.item("pipe_locker", PipeLockerItem::new)
             .properties(p -> p.component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true))
             .register();
 
+//    public static final BlockEntry<Block> PIPE_OUTLINE = REGISTRATE.block("pipe_outline_corner", Block::new)
+//            .transform(BuilderTransformers.palettesIronBlock())
+//            .register();
+
     public ParallelPipes(IEventBus modEventBus, ModContainer modContainer)
     {
         REGISTRATE.registerEventListeners(modEventBus);
+        modEventBus.addListener(ParallelPipes::clientInit);
     }
 
-    // TODO: outline renderer
+    public static ResourceLocation asResource(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
+    }
+
+    public static void clientInit(final FMLClientSetupEvent event) {
+        LockedFluidPipeRenderer.init();
+    }
 }
