@@ -10,29 +10,29 @@ public class ClientConfig
 {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
-    private static final ModConfigSpec.IntValue _OUTLINE_RANGE = BUILDER
+    private static final ModConfigSpec.IntValue OUTLINE_RANGE = BUILDER
             .comment("how far can you see locked pipe outline")
             .defineInRange("outlineRange", 24, 1, 128);
-    private static final ModConfigSpec.BooleanValue _OUTLINE_WRENCH = BUILDER
+    private static final ModConfigSpec.BooleanValue OUTLINE_WRENCH = BUILDER
             .comment("can you see the pipe outline with a wrench")
             .define("outlineWrench", true);
 
     static final ModConfigSpec SPEC = BUILDER.build();
 
-    public static int OUTLINE_RANGE;
-    public static boolean OUTLINE_WRENCH;
+    public static int outlineRange;
+    public static boolean outlineWrench;
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event)
     {
-        OUTLINE_RANGE = _OUTLINE_RANGE.get();
-        OUTLINE_WRENCH = _OUTLINE_WRENCH.get();
+        outlineRange = OUTLINE_RANGE.get();
+        outlineWrench = OUTLINE_WRENCH.get();
     }
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent.Reloading event)
     {
-        OUTLINE_RANGE = _OUTLINE_RANGE.get();
-        OUTLINE_WRENCH = _OUTLINE_WRENCH.get();
+        outlineRange = OUTLINE_RANGE.get();
+        outlineWrench = OUTLINE_WRENCH.get();
     }
 }
