@@ -14,7 +14,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,6 +21,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.ticks.TickPriority;
+import org.jetbrains.annotations.NotNull;
 
 public class LockedFluidPipeBlock extends FluidPipeBlock {
     public LockedFluidPipeBlock(Properties properties) {
@@ -34,8 +34,8 @@ public class LockedFluidPipeBlock extends FluidPipeBlock {
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighbourState, LevelAccessor world,
-                                  BlockPos pos, BlockPos neighbourPos) {
+    public @NotNull BlockState updateShape(BlockState state, Direction direction, BlockState neighbourState, LevelAccessor world,
+                                           BlockPos pos, BlockPos neighbourPos) {
         if (state.getValue(BlockStateProperties.WATERLOGGED))
             world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         if (isOpenAt(state, direction) && neighbourState.hasProperty(BlockStateProperties.WATERLOGGED))

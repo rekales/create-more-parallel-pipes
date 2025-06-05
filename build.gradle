@@ -29,7 +29,7 @@ repositories {
     maven { url = "https://maven.architectury.dev" } // Arch API
     maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven" } // NeoForge config api port, needed by ponder
     maven { url = "https://maven.ftb.dev/releases" } // FTB Mods
-    maven { url = 'https://maven.neoforged.net/releases/' }
+    maven { url = 'https://maven.neoforged.net/#/releases/' }
 }
 
 base {

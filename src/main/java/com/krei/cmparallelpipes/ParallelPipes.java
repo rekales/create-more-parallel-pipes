@@ -1,8 +1,6 @@
 package com.krei.cmparallelpipes;
 
 import com.simibubi.create.AllCreativeModeTabs;
-import com.simibubi.create.AllPartialModels;
-import com.simibubi.create.CreateClient;
 import com.simibubi.create.content.fluids.PipeAttachmentModel;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
 import com.simibubi.create.foundation.data.BlockStateGen;
@@ -14,6 +12,7 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import org.slf4j.Logger;
 
@@ -62,12 +61,8 @@ public class ParallelPipes
             .properties(p -> p.component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true))
             .register();
 
-//    public static final BlockEntry<Block> PIPE_OUTLINE = REGISTRATE.block("pipe_outline_corner", Block::new)
-//            .transform(BuilderTransformers.palettesIronBlock())
-//            .register();
-
-    public ParallelPipes(IEventBus modEventBus, ModContainer modContainer)
-    {
+    public ParallelPipes(IEventBus modEventBus, ModContainer modContainer) {
+        modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         REGISTRATE.registerEventListeners(modEventBus);
         modEventBus.addListener(ParallelPipes::clientInit);
     }
