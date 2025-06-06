@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -65,6 +66,9 @@ public class ParallelPipes
         modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         REGISTRATE.registerEventListeners(modEventBus);
         modEventBus.addListener(ParallelPipes::clientInit);
+        modEventBus.addListener(ClientConfig::onLoad);
+        modEventBus.addListener(ClientConfig::onReload);
+        NeoForge.EVENT_BUS.register(LockedFluidPipeRenderer.class);
     }
 
     public static ResourceLocation asResource(String path) {

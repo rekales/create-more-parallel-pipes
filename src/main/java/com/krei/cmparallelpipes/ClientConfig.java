@@ -1,11 +1,8 @@
 package com.krei.cmparallelpipes;
 
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-@EventBusSubscriber(modid = ParallelPipes.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class ClientConfig
 {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
@@ -22,16 +19,12 @@ public class ClientConfig
     public static int outlineRange;
     public static boolean outlineWrench;
 
-    @SubscribeEvent
-    static void onLoad(final ModConfigEvent event)
-    {
+    static void onLoad(final ModConfigEvent event) {
         outlineRange = OUTLINE_RANGE.get();
         outlineWrench = OUTLINE_WRENCH.get();
     }
 
-    @SubscribeEvent
-    static void onLoad(final ModConfigEvent.Reloading event)
-    {
+    static void onReload(final ModConfigEvent.Reloading event) {
         outlineRange = OUTLINE_RANGE.get();
         outlineWrench = OUTLINE_WRENCH.get();
     }
