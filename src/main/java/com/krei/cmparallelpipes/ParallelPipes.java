@@ -28,8 +28,7 @@ import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
 @Mod(ParallelPipes.MODID)
-public class ParallelPipes
-{
+public class ParallelPipes {
     public static final String MODID = "cmparallelpipes";
 
     @SuppressWarnings("unused")
@@ -47,9 +46,6 @@ public class ParallelPipes
             .transform(pickaxeOnly())
             .blockstate(BlockStateGen.pipe())
             .onRegister(CreateRegistrate.blockModel(() -> PipeAttachmentModel::withAO))
-            .item()
-            .properties(p -> p.component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true))
-            .transform(customItemModel())
             .register();
 
     public static final BlockEntityEntry<FluidPipeBlockEntity> LOCKED_FLUID_PIPE_BLOCK_ENTITY = REGISTRATE

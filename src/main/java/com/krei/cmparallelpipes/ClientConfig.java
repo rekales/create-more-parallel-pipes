@@ -3,8 +3,7 @@ package com.krei.cmparallelpipes;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-public class ClientConfig
-{
+public class ClientConfig {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
     private static final ModConfigSpec.IntValue OUTLINE_RANGE = BUILDER

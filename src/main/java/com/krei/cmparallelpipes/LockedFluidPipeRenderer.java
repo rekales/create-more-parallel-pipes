@@ -31,9 +31,7 @@ public class LockedFluidPipeRenderer  extends SafeBlockEntityRenderer<FluidPipeB
                 && be.getBlockPos().closerThan(player.blockPosition(), ClientConfig.outlineRange)) {
             CachedBuffers.partial(OUTLINE, be.getBlockState())
                     .light(light)
-                    .translate(-1/32f, -1/32f, -1/32f)
-                    .scale(17/16f)
-                    .renderInto(ms, bufferSource.getBuffer(RenderType.solid()));
+                    .renderInto(ms, bufferSource.getBuffer(RenderType.cutout()));
         }
     }
 
