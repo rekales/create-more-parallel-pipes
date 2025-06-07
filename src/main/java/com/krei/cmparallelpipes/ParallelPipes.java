@@ -9,27 +9,27 @@ import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.common.NeoForge;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModContainer;
+import net.minecraftforge.eventbus.api.IEventBus;
 
-import net.neoforged.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod;
 
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
 @Mod(ParallelPipes.MODID)
-public class ParallelPipes
-{
+public class ParallelPipes {
     public static final String MODID = "cmparallelpipes";
 
     @SuppressWarnings("unused")
@@ -48,7 +48,7 @@ public class ParallelPipes
             .blockstate(BlockStateGen.pipe())
             .onRegister(CreateRegistrate.blockModel(() -> PipeAttachmentModel::withAO))
             .item()
-            .properties(p -> p.component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true))
+//            .properties(p -> p.component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true))
             .transform(customItemModel())
             .register();
 
@@ -59,20 +59,21 @@ public class ParallelPipes
             .register();
 
     public static final ItemEntry<PipeLockerItem> PIPE_LOCKER_ITEM = REGISTRATE.item("pipe_locker", PipeLockerItem::new)
-            .properties(p -> p.component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true))
+//            .properties(p -> p.component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true))
             .register();
 
-    public ParallelPipes(IEventBus modEventBus, ModContainer modContainer) {
-        modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
+    public ParallelPipes() {
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         REGISTRATE.registerEventListeners(modEventBus);
         modEventBus.addListener(ParallelPipes::clientInit);
         modEventBus.addListener(ClientConfig::onLoad);
         modEventBus.addListener(ClientConfig::onReload);
-        NeoForge.EVENT_BUS.register(LockedFluidPipeRenderer.class);
+        MinecraftForge.EVENT_BUS.register(LockedFluidPipeRenderer.class);
     }
 
     public static ResourceLocation asResource(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MODID, path);
+        return new ResourceLocation(MODID, path);
     }
 
     public static void clientInit(final FMLClientSetupEvent event) {

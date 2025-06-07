@@ -11,8 +11,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.event.TickEvent;
 
 public class LockedFluidPipeRenderer  extends SafeBlockEntityRenderer<FluidPipeBlockEntity> {
 
@@ -44,7 +44,7 @@ public class LockedFluidPipeRenderer  extends SafeBlockEntityRenderer<FluidPipeB
 
     // caching condition to reduce redundancy, maybe unnecessary
     @SubscribeEvent
-    public static void clientTick(ClientTickEvent.Pre event) {
+    public static void clientTick(TickEvent.ClientTickEvent event) {
         Player player = Minecraft.getInstance().player;
         shouldRender = player != null
                 && (player.getMainHandItem().getItem() instanceof PipeLockerItem

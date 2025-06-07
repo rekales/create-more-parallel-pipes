@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.ticks.TickPriority;
-import org.jetbrains.annotations.NotNull;
+import org.antlr.v4.runtime.misc.NotNull;
 
 public class LockedFluidPipeBlock extends FluidPipeBlock {
     public LockedFluidPipeBlock(Properties properties) {
@@ -33,6 +33,7 @@ public class LockedFluidPipeBlock extends FluidPipeBlock {
         return ParallelPipes.LOCKED_FLUID_PIPE_BLOCK_ENTITY.get();
     }
 
+    @SuppressWarnings({"deprecation", "NullableProblems"})
     @Override
     public @NotNull BlockState updateShape(BlockState state, Direction direction, BlockState neighbourState, LevelAccessor world,
                                            BlockPos pos, BlockPos neighbourPos) {
