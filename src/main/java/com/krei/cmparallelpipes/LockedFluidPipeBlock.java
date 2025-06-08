@@ -13,6 +13,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -37,9 +38,8 @@ public class LockedFluidPipeBlock extends FluidPipeBlock {
         return ParallelPipes.LOCKED_FLUID_PIPE_BLOCK_ENTITY.get();
     }
 
-    @SuppressWarnings({"deprecation", "NullableProblems"})
     @Override
-    public @NotNull ItemStack getCloneItemStack(@NotNull BlockState state, @NotNull HitResult target, @NotNull LevelReader level, @NotNull BlockPos pos, @NotNull Player player) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
         return AllBlocks.FLUID_PIPE.asStack();
     }
 

@@ -4,13 +4,13 @@ import com.simibubi.create.content.equipment.wrench.WrenchItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ScaffoldingBlockItem;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.event.TickEvent;
 
 public class ClientHandler {
 
     @SubscribeEvent
-    public static void clientTick(ClientTickEvent.Pre event) {
+    public static void clientTick(TickEvent.ClientTickEvent event) {
         Player player = Minecraft.getInstance().player;
         LockedFluidPipeRenderer.shouldRender = player != null
                 && (player.getMainHandItem().getItem() instanceof ScaffoldingBlockItem

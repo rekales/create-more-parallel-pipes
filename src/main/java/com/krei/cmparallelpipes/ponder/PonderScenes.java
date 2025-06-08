@@ -25,8 +25,8 @@ public class PonderScenes implements PonderPlugin {
 
     @Override
     public void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
-        PonderSceneRegistrationHelper<ItemProviderEntry<?,?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
-        HELPER.addStoryBoard(AllBlocks.FLUID_PIPE, "locked_pipe", PonderScenes::lockedPipe);
+        PonderSceneRegistrationHelper<ItemProviderEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+        HELPER.forComponents(AllBlocks.FLUID_PIPE).addStoryBoard("locked_pipe", PonderScenes::lockedPipe);
     }
 
     public static void lockedPipe(SceneBuilder scene, SceneBuildingUtil util) {

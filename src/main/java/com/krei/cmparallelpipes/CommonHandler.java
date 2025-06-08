@@ -6,8 +6,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ScaffoldingBlockItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 public class CommonHandler {
 
