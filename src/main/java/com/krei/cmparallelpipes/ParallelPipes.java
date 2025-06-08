@@ -4,14 +4,11 @@ import com.krei.cmparallelpipes.ponder.PonderScenes;
 import com.simibubi.create.AllCreativeModeTabs;
 import com.simibubi.create.content.fluids.PipeAttachmentModel;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
-import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import com.tterrag.registrate.util.entry.ItemEntry;
 import net.createmod.ponder.foundation.PonderIndex;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.fml.config.ModConfig;
@@ -25,8 +22,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 
 import net.neoforged.fml.common.Mod;
-
-import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
 @Mod(ParallelPipes.MODID)
 public class ParallelPipes {
@@ -44,8 +39,6 @@ public class ParallelPipes {
     public static final BlockEntry<LockedFluidPipeBlock> LOCKED_FLUID_PIPE_BLOCK = REGISTRATE.block("locked_fluid_pipe", LockedFluidPipeBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(BlockBehaviour.Properties::forceSolidOff)
-            .transform(pickaxeOnly())
-            .blockstate(BlockStateGen.pipe())
             .onRegister(CreateRegistrate.blockModel(() -> PipeAttachmentModel::withAO))
             .register();
 
