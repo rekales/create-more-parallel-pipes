@@ -55,17 +55,14 @@ public class ParallelPipes {
             .renderer(() -> LockedFluidPipeRenderer::new)
             .register();
 
-    public static final ItemEntry<PipeLockerItem> PIPE_LOCKER_ITEM = REGISTRATE.item("pipe_locker", PipeLockerItem::new)
-            .properties(p -> p.component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true))
-            .register();
-
     public ParallelPipes(IEventBus modEventBus, ModContainer modContainer) {
         modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         REGISTRATE.registerEventListeners(modEventBus);
         modEventBus.addListener(ParallelPipes::clientInit);
         modEventBus.addListener(ClientConfig::onLoad);
         modEventBus.addListener(ClientConfig::onReload);
-        NeoForge.EVENT_BUS.register(LockedFluidPipeRenderer.class);
+        NeoForge.EVENT_BUS.register(ClientHandler.class);
+        NeoForge.EVENT_BUS.register(CommonHandler.class);
     }
 
     public static ResourceLocation asResource(String path) {

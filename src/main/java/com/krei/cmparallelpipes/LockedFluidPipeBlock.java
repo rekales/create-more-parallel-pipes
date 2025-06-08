@@ -96,10 +96,10 @@ public class LockedFluidPipeBlock extends FluidPipeBlock {
         return to;
     }
 
-    public static void lockPipe(BlockState blockState, Level level, BlockPos pos) {
+    public static void lockPipe(Level level, BlockPos pos) {
         // Note: Get variants here for compat?
         FluidTransportBehaviour.cacheFlows(level, pos);
-        level.setBlockAndUpdate(pos, ParallelPipes.LOCKED_FLUID_PIPE_BLOCK.get().createBlockStateFromFluidPipe(blockState));
+        level.setBlockAndUpdate(pos, ParallelPipes.LOCKED_FLUID_PIPE_BLOCK.get().createBlockStateFromFluidPipe(level.getBlockState(pos)));
         FluidTransportBehaviour.loadFlows(level, pos);
         playLockingSound(level, pos);
     }

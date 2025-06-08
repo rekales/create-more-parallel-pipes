@@ -73,7 +73,7 @@ public class PonderScenes implements PonderPlugin {
 
         scene.overlay().showControls(util.vector().topOf(pipePos3), Pointing.DOWN, 60)
                 .rightClick()
-                .withItem(ParallelPipes.PIPE_LOCKER_ITEM.asStack());
+                .withItem(AllBlocks.ANDESITE_SCAFFOLD.asStack());
         scene.idle(7);
 
         pipeBlock = getNoDirectionPipe()
@@ -84,7 +84,7 @@ public class PonderScenes implements PonderPlugin {
 
         scene.overlay().showText(70)
                 .placeNearTarget()
-                .text("Andesite Scaffolding can be used to lock the pipe connectivity state similar to Encased Pipe")
+                .text("Any scaffolding block can be used to lock the pipe connectivity state similar to Encased Pipe")
                 .attachKeyFrame()
                 .pointAt(util.vector().topOf(pipePos3));
         scene.idle(80);

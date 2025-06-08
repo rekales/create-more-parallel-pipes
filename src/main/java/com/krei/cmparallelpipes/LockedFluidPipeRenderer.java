@@ -1,7 +1,6 @@
 package com.krei.cmparallelpipes;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.content.equipment.wrench.WrenchItem;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
@@ -11,8 +10,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
 
 public class LockedFluidPipeRenderer  extends SafeBlockEntityRenderer<FluidPipeBlockEntity> {
 
@@ -26,6 +23,7 @@ public class LockedFluidPipeRenderer  extends SafeBlockEntityRenderer<FluidPipeB
     protected void renderSafe(FluidPipeBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource bufferSource, int light, int overlay) {
         Player player = Minecraft.getInstance().player;
 
+        // cached condition in ClientHandler.ClientTick to reduce redundancy, maybe unnecessary
         if (shouldRender
                 && player != null
                 && be.getBlockPos().closerThan(player.blockPosition(), ClientConfig.outlineRange)) {
@@ -38,17 +36,5 @@ public class LockedFluidPipeRenderer  extends SafeBlockEntityRenderer<FluidPipeB
     public static void init() {
         // init static fields
         // for some reason this makes the thing render properly
-    }
-
-    // caching condition to reduce redundancy, maybe unnecessary
-    @SubscribeEvent
-    public static void clientTick(ClientTickEvent.Pre event) {
-        Player player = Minecraft.getInstance().player;
-        shouldRender = player != null
-                && (player.getMainHandItem().getItem() instanceof PipeLockerItem
-                || player.getOffhandItem().getItem() instanceof PipeLockerItem
-                || ClientConfig.outlineWrench
-                && (player.getMainHandItem().getItem() instanceof WrenchItem
-                || player.getOffhandItem().getItem() instanceof WrenchItem));
     }
 }
