@@ -1,5 +1,6 @@
 package com.krei.cmparallelpipes;
 
+import com.krei.cmparallelpipes.ponder.PonderScenes;
 import com.simibubi.create.AllCreativeModeTabs;
 import com.simibubi.create.content.fluids.PipeAttachmentModel;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
@@ -9,6 +10,7 @@ import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
+import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -24,7 +26,6 @@ import net.neoforged.fml.ModContainer;
 
 import net.neoforged.fml.common.Mod;
 
-import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
 @Mod(ParallelPipes.MODID)
@@ -73,5 +74,8 @@ public class ParallelPipes {
 
     public static void clientInit(final FMLClientSetupEvent event) {
         LockedFluidPipeRenderer.init();
+        PonderIndex.addPlugin(new PonderScenes());
     }
+
+    // TODO: Ponder about pipe outline
 }
