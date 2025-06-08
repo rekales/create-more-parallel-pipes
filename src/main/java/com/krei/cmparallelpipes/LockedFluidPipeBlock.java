@@ -10,9 +10,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -20,6 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.ticks.TickPriority;
 import org.antlr.v4.runtime.misc.NotNull;
 
@@ -34,6 +38,11 @@ public class LockedFluidPipeBlock extends FluidPipeBlock {
     }
 
     @SuppressWarnings({"deprecation", "NullableProblems"})
+    @Override
+    public @NotNull ItemStack getCloneItemStack(@NotNull BlockState state, @NotNull HitResult target, @NotNull LevelReader level, @NotNull BlockPos pos, @NotNull Player player) {
+        return AllBlocks.FLUID_PIPE.asStack();
+    }
+
     @Override
     public @NotNull BlockState updateShape(BlockState state, Direction direction, BlockState neighbourState, LevelAccessor world,
                                            BlockPos pos, BlockPos neighbourPos) {
@@ -88,10 +97,10 @@ public class LockedFluidPipeBlock extends FluidPipeBlock {
         return to;
     }
 
-    public static void lockPipe(BlockState blockState, Level level, BlockPos pos) {
+    public static void lockPipe(Level level, BlockPos pos) {
         // Note: Get variants here for compat?
         FluidTransportBehaviour.cacheFlows(level, pos);
-        level.setBlockAndUpdate(pos, ParallelPipes.LOCKED_FLUID_PIPE_BLOCK.get().createBlockStateFromFluidPipe(blockState));
+        level.setBlockAndUpdate(pos, ParallelPipes.LOCKED_FLUID_PIPE_BLOCK.get().createBlockStateFromFluidPipe(level.getBlockState(pos)));
         FluidTransportBehaviour.loadFlows(level, pos);
         playLockingSound(level, pos);
     }

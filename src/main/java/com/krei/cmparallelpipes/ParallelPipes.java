@@ -1,14 +1,14 @@
 package com.krei.cmparallelpipes;
 
+import com.krei.cmparallelpipes.ponder.PonderScenes;
 import com.simibubi.create.AllCreativeModeTabs;
 import com.simibubi.create.content.fluids.PipeAttachmentModel;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
-import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import com.tterrag.registrate.util.entry.ItemEntry;
+import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.common.MinecraftForge;
@@ -24,9 +24,6 @@ import com.mojang.logging.LogUtils;
 import net.minecraftforge.eventbus.api.IEventBus;
 
 import net.minecraftforge.fml.common.Mod;
-
-import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
-import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
 @Mod(ParallelPipes.MODID)
 public class ParallelPipes {
@@ -44,22 +41,13 @@ public class ParallelPipes {
     public static final BlockEntry<LockedFluidPipeBlock> LOCKED_FLUID_PIPE_BLOCK = REGISTRATE.block("locked_fluid_pipe", LockedFluidPipeBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(BlockBehaviour.Properties::forceSolidOff)
-            .transform(pickaxeOnly())
-            .blockstate(BlockStateGen.pipe())
             .onRegister(CreateRegistrate.blockModel(() -> PipeAttachmentModel::withAO))
-            .item()
-//            .properties(p -> p.component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true))
-            .transform(customItemModel())
             .register();
 
     public static final BlockEntityEntry<FluidPipeBlockEntity> LOCKED_FLUID_PIPE_BLOCK_ENTITY = REGISTRATE
             .blockEntity("fixed_fluid_pipe", FluidPipeBlockEntity::new)
             .validBlocks(LOCKED_FLUID_PIPE_BLOCK)
             .renderer(() -> LockedFluidPipeRenderer::new)
-            .register();
-
-    public static final ItemEntry<PipeLockerItem> PIPE_LOCKER_ITEM = REGISTRATE.item("pipe_locker", PipeLockerItem::new)
-//            .properties(p -> p.component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true))
             .register();
 
     public ParallelPipes() {
@@ -69,7 +57,8 @@ public class ParallelPipes {
         modEventBus.addListener(ParallelPipes::clientInit);
         modEventBus.addListener(ClientConfig::onLoad);
         modEventBus.addListener(ClientConfig::onReload);
-        MinecraftForge.EVENT_BUS.register(LockedFluidPipeRenderer.class);
+        MinecraftForge.EVENT_BUS.register(ClientHandler.class);
+        MinecraftForge.EVENT_BUS.register(CommonHandler.class);
     }
 
     public static ResourceLocation asResource(String path) {
@@ -78,5 +67,8 @@ public class ParallelPipes {
 
     public static void clientInit(final FMLClientSetupEvent event) {
         LockedFluidPipeRenderer.init();
+        PonderIndex.addPlugin(new PonderScenes());
     }
+
+    // TODO: Ponder about pipe outline
 }

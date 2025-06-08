@@ -3,8 +3,7 @@ package com.krei.cmparallelpipes;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.common.ForgeConfigSpec;
 
-public class ClientConfig
-{
+public class ClientConfig {
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
     private static final ForgeConfigSpec.IntValue OUTLINE_RANGE = BUILDER
