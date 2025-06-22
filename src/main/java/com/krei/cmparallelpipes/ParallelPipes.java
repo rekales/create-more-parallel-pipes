@@ -54,7 +54,7 @@ public class ParallelPipes {
         modEventBus.addListener(ParallelPipes::clientInit);
         modEventBus.addListener(ClientConfig::onLoad);
         modEventBus.addListener(ClientConfig::onReload);
-        NeoForge.EVENT_BUS.register(ClientHandler.class);
+        // Client events at ClientHandler
         NeoForge.EVENT_BUS.register(CommonHandler.class);
     }
 
