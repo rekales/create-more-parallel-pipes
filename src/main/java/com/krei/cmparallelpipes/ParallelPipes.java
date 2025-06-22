@@ -57,7 +57,7 @@ public class ParallelPipes {
         modEventBus.addListener(ParallelPipes::clientInit);
         modEventBus.addListener(ClientConfig::onLoad);
         modEventBus.addListener(ClientConfig::onReload);
-        MinecraftForge.EVENT_BUS.register(ClientHandler.class);
+        // Client events at ClientHandler
         MinecraftForge.EVENT_BUS.register(CommonHandler.class);
     }
 
