@@ -18,14 +18,14 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ScaffoldingBlockItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 // Putting a lot of trust in Java's lazy class loading
 public class CopycatsPlusCompat {
@@ -53,7 +53,7 @@ public class CopycatsPlusCompat {
             .register();
 
     public static void register(IEventBus modEventBus) {
-        NeoForge.EVENT_BUS.register(CopycatsPlusCompat.class);
+        MinecraftForge.EVENT_BUS.register(CopycatsPlusCompat.class);
         modEventBus.addListener(CopycatsPlusCompat::clientInit);
     }
 

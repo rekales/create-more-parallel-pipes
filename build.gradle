@@ -93,9 +93,9 @@ dependencies {
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
     implementation("io.github.llamalad7:mixinextras-forge:0.4.1")
 
-    compileOnly("curse.maven:copycats-968398:6650089")
+    modCompileOnly("curse.maven:copycats-968398:6650089")
 
-//    runtimeOnly("curse.maven:copycats-968398:6650089")
+//    modRuntimeOnly("curse.maven:copycats-968398:6650089")
 
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 }

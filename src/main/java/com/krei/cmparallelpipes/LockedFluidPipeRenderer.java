@@ -10,10 +10,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class LockedFluidPipeRenderer extends SafeBlockEntityRenderer<FluidPipeBlockEntity> {
 
     protected static final PartialModel OUTLINE = PartialModel.of(ParallelPipes.asResource("block/pipe_outline"));
