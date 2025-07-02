@@ -28,7 +28,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.ticks.TickPriority;
 import org.antlr.v4.runtime.misc.NotNull;
 
-public class LockedFluidPipeBlock extends FluidPipeBlock {
+public class LockedFluidPipeBlock extends FluidPipeBlock implements LockedPipeMarker{
     public LockedFluidPipeBlock(Properties properties) {
         super(properties);
     }

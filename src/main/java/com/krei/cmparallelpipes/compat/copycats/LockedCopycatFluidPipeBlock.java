@@ -4,6 +4,7 @@ import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
+import com.krei.cmparallelpipes.LockedPipeMarker;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.fluids.FluidTransportBehaviour;
 import com.simibubi.create.content.fluids.pipes.EncasedPipeBlock;
@@ -33,7 +34,7 @@ import net.minecraft.world.ticks.TickPriority;
 import org.antlr.v4.runtime.misc.NotNull;
 
 // Let's do janky shit shall we?
-public class LockedCopycatFluidPipeBlock extends CopycatFluidPipeBlock {
+public class LockedCopycatFluidPipeBlock extends CopycatFluidPipeBlock implements LockedPipeMarker {
 
     public LockedCopycatFluidPipeBlock(Properties properties) {
         super(properties);
