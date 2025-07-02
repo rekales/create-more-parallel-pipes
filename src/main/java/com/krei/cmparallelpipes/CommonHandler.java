@@ -1,7 +1,6 @@
 package com.krei.cmparallelpipes;
 
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.fluids.pipes.FluidPipeBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ScaffoldingBlockItem;
@@ -20,10 +19,8 @@ public class CommonHandler {
 
         if (!event.getEntity().isCrouching()
                 && event.getItemStack().getItem() instanceof ScaffoldingBlockItem
-                && AllBlocks.FLUID_PIPE.has(blockState) // NOTE: Temp Fix
-                && blockState.getBlock() instanceof FluidPipeBlock) {
-            if (!level.isClientSide()
-                    && !(blockState.getBlock() instanceof LockedFluidPipeBlock)) {
+                && AllBlocks.FLUID_PIPE.has(blockState)) {
+            if (!level.isClientSide()) {
                 LockedFluidPipeBlock.lockPipe(level, pos);
             }
             event.setCancellationResult(InteractionResult.SUCCESS);

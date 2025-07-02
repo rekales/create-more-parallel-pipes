@@ -9,13 +9,15 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 
-@EventBusSubscriber(modid=ParallelPipes.MODID, value= Dist.CLIENT)
+@EventBusSubscriber(modid=ParallelPipes.MODID, value=Dist.CLIENT)
 public class ClientHandler {
+
+    public static boolean shouldRender = false;
 
     @SubscribeEvent
     public static void clientTick(ClientTickEvent.Pre event) {
         Player player = Minecraft.getInstance().player;
-        LockedFluidPipeRenderer.shouldRender = player != null
+        shouldRender = player != null
                 && (player.getMainHandItem().getItem() instanceof ScaffoldingBlockItem
                 || player.getOffhandItem().getItem() instanceof ScaffoldingBlockItem
                 || ClientConfig.outlineWrench

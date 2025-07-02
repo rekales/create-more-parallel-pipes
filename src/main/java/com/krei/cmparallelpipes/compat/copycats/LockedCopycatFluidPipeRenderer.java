@@ -1,8 +1,11 @@
-package com.krei.cmparallelpipes;
+package com.krei.cmparallelpipes.compat.copycats;
 
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlockEntity;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeRenderer;
+import com.krei.cmparallelpipes.ClientConfig;
+import com.krei.cmparallelpipes.ClientHandler;
+import com.krei.cmparallelpipes.ParallelPipes;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
-import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.createmod.catnip.render.CachedBuffers;
 import net.minecraft.client.Minecraft;
@@ -14,18 +17,19 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class LockedFluidPipeRenderer extends SafeBlockEntityRenderer<FluidPipeBlockEntity> {
+public class LockedCopycatFluidPipeRenderer extends CopycatFluidPipeRenderer {
 
     protected static final PartialModel OUTLINE = PartialModel.of(ParallelPipes.asResource("block/pipe_outline"));
 
-    public LockedFluidPipeRenderer(BlockEntityRendererProvider.Context context) {}
+    public LockedCopycatFluidPipeRenderer(BlockEntityRendererProvider.Context context) {
+        super(context);
+    }
 
-    // I'm pretty sure there's a better way than making a blockentity renderer
     @Override
-    protected void renderSafe(FluidPipeBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource bufferSource, int light, int overlay) {
-        Player player = Minecraft.getInstance().player;
+    protected void renderSafe(CopycatFluidPipeBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource bufferSource, int light, int overlay) {
+        super.renderSafe(be, partialTicks, ms,bufferSource, light, overlay);
 
-        // cached condition in ClientHandler.ClientTick to reduce redundancy, maybe unnecessary
+        Player player = Minecraft.getInstance().player;
         if (ClientHandler.shouldRender
                 && player != null
                 && be.getBlockPos().closerThan(player.blockPosition(), ClientConfig.outlineRange)) {

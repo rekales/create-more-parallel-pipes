@@ -1,9 +1,12 @@
-package com.krei.cmparallelpipes;
+package com.krei.cmparallelpipes.compat.copycats;
 
+import com.copycatsplus.copycats.CCBlocks;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlock;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlockEntity;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.fluids.FluidTransportBehaviour;
 import com.simibubi.create.content.fluids.pipes.EncasedPipeBlock;
-import com.simibubi.create.content.fluids.pipes.FluidPipeBlock;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
@@ -12,6 +15,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -27,19 +31,21 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.NotNull;
 
-public class LockedFluidPipeBlock extends FluidPipeBlock {
-    public LockedFluidPipeBlock(Properties properties) {
+// Let's do janky shit shall we?
+public class LockedCopycatFluidPipeBlock extends CopycatFluidPipeBlock {
+
+    public LockedCopycatFluidPipeBlock(Properties properties) {
         super(properties);
     }
 
     @Override
     public BlockEntityType<? extends FluidPipeBlockEntity> getBlockEntityType() {
-        return ParallelPipes.LOCKED_FLUID_PIPE_BLOCK_ENTITY.get();
+        return CopycatsPlusCompat.LOCKED_COPYCAT_FLUID_PIPE_BLOCK_ENTITY.get();
     }
 
     @Override
     public @NotNull ItemStack getCloneItemStack(@NotNull BlockState state, @NotNull HitResult target, @NotNull LevelReader level, @NotNull BlockPos pos, @NotNull Player player) {
-        return AllBlocks.FLUID_PIPE.asStack();
+        return CCBlocks.COPYCAT_FLUID_PIPE.asStack();
     }
 
     @Override
@@ -60,25 +66,47 @@ public class LockedFluidPipeBlock extends FluidPipeBlock {
         Level world = context.getLevel();
         BlockPos pos = context.getClickedPos();
 
-        if (world.isClientSide)
-            return InteractionResult.SUCCESS;
+        if (world.getBlockEntity(pos) instanceof CopycatFluidPipeBlockEntity be) {
+            if (be.getConsumedItem().getItem().equals(Items.AIR)) {
+                if (world.isClientSide)
+                    return InteractionResult.SUCCESS;
+                context.getLevel()
+                        .levelEvent(2001, context.getClickedPos(), Block.getId(state));
+                BlockState equivalentPipe = EncasedPipeBlock.transferSixWayProperties(state, CCBlocks.COPYCAT_FLUID_PIPE.getDefaultState());
 
-        context.getLevel().levelEvent(2001, context.getClickedPos(), Block.getId(state));
-        BlockState equivalentPipe = EncasedPipeBlock.transferSixWayProperties(state, AllBlocks.FLUID_PIPE.getDefaultState());
+                Direction firstFound = Direction.UP;
+                for (Direction d : Iterate.directions)
+                    if (state.getValue(EncasedPipeBlock.FACING_TO_PROPERTY_MAP.get(d))) {
+                        firstFound = d;
+                        break;
+                    }
 
-        Direction firstFound = Direction.UP;
-        for (Direction d : Iterate.directions)
-            if (state.getValue(EncasedPipeBlock.FACING_TO_PROPERTY_MAP.get(d))) {
-                firstFound = d;
-                break;
+                FluidTransportBehaviour.cacheFlows(world, pos);
+                world.setBlockAndUpdate(pos, AllBlocks.FLUID_PIPE.get()
+                        .updateBlockState(equivalentPipe, firstFound, null, world, pos));
+                FluidTransportBehaviour.loadFlows(world, pos);
+                return InteractionResult.SUCCESS;
+            } else {
+                ItemStack consumedItem = be.getConsumedItem();
+                if (!be.hasCustomMaterial()) {
+                    return InteractionResult.PASS;
+                } else {
+                    Player player = context.getPlayer();
+                    if (!player.isCreative()) {
+                        player.getInventory().placeItemBackInInventory(consumedItem);
+                    }
+
+                    context.getLevel().levelEvent(2001, context.getClickedPos(), Block.getId(ICopycatBlock.getMaterial(context.getLevel(), context.getClickedPos())));
+                    be.setMaterial(AllBlocks.COPYCAT_BASE.getDefaultState());
+                    be.setConsumedItem(ItemStack.EMPTY);
+                    return InteractionResult.SUCCESS;
+                }
             }
+        }
 
-        FluidTransportBehaviour.cacheFlows(world, pos);
-        world.setBlockAndUpdate(pos, AllBlocks.FLUID_PIPE.get()
-                .updateBlockState(equivalentPipe, firstFound, null, world, pos));
-        FluidTransportBehaviour.loadFlows(world, pos);
-        return InteractionResult.SUCCESS;
+        return InteractionResult.PASS;
     }
+
 
     public BlockState createBlockStateFromFluidPipe(BlockState blockState) {
         // Note: Get variants here for compat?
@@ -97,10 +125,24 @@ public class LockedFluidPipeBlock extends FluidPipeBlock {
 
     public static void lockPipe(Level level, BlockPos pos) {
         // Note: Get variants here for compat?
+
+        CopycatFluidPipeBlockEntity be = level.getBlockEntity(pos) instanceof CopycatFluidPipeBlockEntity x ? x : null ;
+        if (be == null)
+            return;
+        ItemStack itemStack = be.getConsumedItem();
+        BlockState blockState = be.getMaterial();
+        be.setConsumedItem(ItemStack.EMPTY);
+        be.setMaterial(AllBlocks.COPYCAT_BASE.getDefaultState());
+
         FluidTransportBehaviour.cacheFlows(level, pos);
-        level.setBlockAndUpdate(pos, ParallelPipes.LOCKED_FLUID_PIPE_BLOCK.get().createBlockStateFromFluidPipe(level.getBlockState(pos)));
+        level.setBlockAndUpdate(pos, CopycatsPlusCompat.LOCKED_COPYCAT_FLUID_PIPE_BLOCK.get().createBlockStateFromFluidPipe(level.getBlockState(pos)));
         FluidTransportBehaviour.loadFlows(level, pos);
         playLockingSound(level, pos);
+
+        if (level.getBlockEntity(pos) instanceof CopycatFluidPipeBlockEntity nbe) {
+            nbe.setConsumedItem(itemStack);
+            nbe.setMaterial(blockState);
+        }
     }
 
     @SuppressWarnings("deprecation")
