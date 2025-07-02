@@ -9,13 +9,15 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid=ParallelPipes.MODID, value= Dist.CLIENT)
+@Mod.EventBusSubscriber(modid=ParallelPipes.MODID, value=Dist.CLIENT)
 public class ClientHandler {
+
+    public static boolean shouldRender = false;
 
     @SubscribeEvent
     public static void clientTick(TickEvent.ClientTickEvent event) {
         Player player = Minecraft.getInstance().player;
-        LockedFluidPipeRenderer.shouldRender = player != null
+        shouldRender = player != null
                 && (player.getMainHandItem().getItem() instanceof ScaffoldingBlockItem
                 || player.getOffhandItem().getItem() instanceof ScaffoldingBlockItem
                 || ClientConfig.outlineWrench

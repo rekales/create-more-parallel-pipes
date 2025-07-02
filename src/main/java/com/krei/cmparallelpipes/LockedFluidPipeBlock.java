@@ -64,8 +64,7 @@ public class LockedFluidPipeBlock extends FluidPipeBlock {
         if (world.isClientSide)
             return InteractionResult.SUCCESS;
 
-        context.getLevel()
-                .levelEvent(2001, context.getClickedPos(), Block.getId(state));
+        context.getLevel().levelEvent(2001, context.getClickedPos(), Block.getId(state));
         BlockState equivalentPipe = EncasedPipeBlock.transferSixWayProperties(state, AllBlocks.FLUID_PIPE.getDefaultState());
 
         Direction firstFound = Direction.UP;
