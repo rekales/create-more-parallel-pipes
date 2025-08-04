@@ -25,7 +25,9 @@ public class LockedFluidPipeRenderer extends SafeBlockEntityRenderer<FluidPipeBl
     protected void renderSafe(FluidPipeBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource bufferSource, int light, int overlay) {
         Player player = Minecraft.getInstance().player;
 
-        // cached condition in ClientHandler.ClientTick to reduce redundancy, maybe unnecessary
+        if (OUTLINE.get() == null)
+            return;
+
         if (ClientHandler.shouldRender
                 && player != null
                 && be.getBlockPos().closerThan(player.blockPosition(), ClientConfig.outlineRange)) {

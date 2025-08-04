@@ -50,7 +50,7 @@ public class ParallelPipes {
     public static final BlockEntityEntry<FluidPipeBlockEntity> LOCKED_FLUID_PIPE_BLOCK_ENTITY = REGISTRATE
             .blockEntity("fixed_fluid_pipe", FluidPipeBlockEntity::new)
             .validBlocks(LOCKED_FLUID_PIPE_BLOCK)
-            .renderer(() -> LockedFluidPipeRenderer::new)
+//            .renderer(() -> LockedFluidPipeRenderer::new)
             .register();
 
     public ParallelPipes(IEventBus modEventBus, ModContainer modContainer) {
