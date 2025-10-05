@@ -18,7 +18,7 @@ public class ClientConfig {
     public static int outlineRange;
     public static boolean outlineWrench;
 
-    static void onLoad(final ModConfigEvent event) {
+    static void onLoad(final ModConfigEvent.Loading event) {
         outlineRange = OUTLINE_RANGE.get();
         outlineWrench = OUTLINE_WRENCH.get();
     }
