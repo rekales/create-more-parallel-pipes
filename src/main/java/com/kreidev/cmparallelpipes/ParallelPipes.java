@@ -23,6 +23,7 @@ import net.neoforged.fml.common.Mod;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings("unused")
 @Mod(ParallelPipes.MOD_ID)
 public class ParallelPipes {
     public static final String MOD_ID = "cmparallelpipes";
@@ -60,15 +61,8 @@ public class ParallelPipes {
     }
 
     public static void clientInit(final FMLClientSetupEvent event) {
-        LockedFluidPipeRenderer.init();
         PonderIndex.addPlugin(new PonderScenes());
-        // Somethings wrong with registrate that makes me wanna commit seppuku
-//        BlockEntityRenderers.register(
-//                LOCKED_FLUID_PIPE_BLOCK_ENTITY.get(),
-//                LockedFluidPipeRenderer::new
-//        );
     }
-
 
     // TODO: Ponder about pipe outline
 }

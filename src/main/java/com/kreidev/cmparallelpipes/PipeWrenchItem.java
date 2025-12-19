@@ -19,13 +19,19 @@ public class PipeWrenchItem extends Item {
         Level level = context.getLevel();
 
         if (level.getBlockEntity(context.getClickedPos()) instanceof FluidPipeBlockEntity pipeBlockEntity) {
-                boolean locked = pipeBlockEntity.getData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get());
                 Player player = context.getPlayer();
+                if (player == null) return InteractionResult.PASS;
+
                 if (player.isCrouching()) {
-                    ParallelPipes.LOGGER.info("toggled lock");
-                    pipeBlockEntity.setData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get(), !locked);
+                    pipeBlockEntity.setData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get(), false);
+                    if (level.isClientSide()) {  // NOTE: For instant feedback
+                        ClientHandler.renderedBlockEntities.remove(pipeBlockEntity);
+                    }
                 } else {
-                    ParallelPipes.LOGGER.info("locked: " + locked);
+                    pipeBlockEntity.setData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get(), true);
+                    if (level.isClientSide()) {  // NOTE: For instant feedback
+                        ClientHandler.renderedBlockEntities.add(pipeBlockEntity);
+                    }
                 }
             return InteractionResult.CONSUME;
         }
