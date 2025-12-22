@@ -40,7 +40,7 @@ public class PipeWrenchItem extends Item {
             if (player == null) return InteractionResult.PASS;
 
             if (player.isCrouching()) {
-                pipeBlockEntity.setData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get(), false);
+                setLocked(pipeBlockEntity, false);
                 if (level.isClientSide()) {  // NOTE: For instant feedback
                     ClientHandler.renderedBlockEntities.remove(pipeBlockEntity);
                 } else {
@@ -53,8 +53,8 @@ public class PipeWrenchItem extends Item {
                         level.setBlockAndUpdate(pos, updated);
                 }
             } else {
-                if (!pipeBlockEntity.getData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get())) {
-                    pipeBlockEntity.setData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get(), true);
+                if (!isLocked(pipeBlockEntity)) {
+                    setLocked(pipeBlockEntity, true);
                     if (level.isClientSide()) {  // NOTE: For instant feedback
                         ClientHandler.renderedBlockEntities.add(pipeBlockEntity);
                     }
@@ -94,6 +94,15 @@ public class PipeWrenchItem extends Item {
         }
 
         return super.onItemUseFirst(stack, context);
+    }
+
+    public static void setLocked(FluidPipeBlockEntity pipeEntity, boolean locked) {
+        pipeEntity.setData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get(), locked);
+
+    }
+
+    public static boolean isLocked(FluidPipeBlockEntity pipeEntity) {
+        return pipeEntity.getData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get());
     }
 
     public static @Nullable Direction getSegment(BlockState state, BlockPos pos, Vec3 hitLocation) {

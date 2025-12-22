@@ -29,7 +29,7 @@ import static com.kreidev.cmparallelpipes.PipeWrenchItem.*;
 @EventBusSubscriber(modid=ParallelPipes.MOD_ID, value=Dist.CLIENT)
 public class ClientHandler {
 
-    public static List<BlockEntity> renderedBlockEntities = new ArrayList<>();
+    public static List<FluidPipeBlockEntity> renderedBlockEntities = new ArrayList<>();
 
     @SubscribeEvent
     public static void clientTick(ClientTickEvent.Pre event) {
@@ -59,7 +59,8 @@ public class ClientHandler {
                 renderedBlockEntities = blockEntities.values().stream()
                         .filter(be -> be instanceof FluidPipeBlockEntity)
                         .filter(be -> Vec3.atCenterOf(be.getBlockPos()).closerThan(playerPos, 24))
-                        .filter(be -> be.getData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get()))
+                        .map(FluidPipeBlockEntity.class::cast)
+                        .filter(PipeWrenchItem::isLocked)
                         .collect(Collectors.toList());
             }
 
@@ -81,7 +82,7 @@ public class ClientHandler {
             if (!player.isCrouching()
                     && player.pick(player.blockInteractionRange(), 0.0F, false) instanceof BlockHitResult hit
                     && level.getBlockEntity(hit.getBlockPos()) instanceof FluidPipeBlockEntity pipeEntity
-                    && pipeEntity.getData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get())) {
+                    && PipeWrenchItem.isLocked(pipeEntity)) {
                 BlockPos pos = hit.getBlockPos();
                 BlockState blockState = level.getBlockState(pos);
                 Vec3 hitLoc = hit.getLocation();

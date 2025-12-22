@@ -1,6 +1,6 @@
 package com.kreidev.cmparallelpipes.mixin;
 
-import com.kreidev.cmparallelpipes.ParallelPipes;
+import com.kreidev.cmparallelpipes.PipeWrenchItem;
 import com.simibubi.create.content.fluids.FluidTransportBehaviour;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlock;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
@@ -22,8 +22,8 @@ public abstract class FluidPipeBlockMixin {
     private static void canConnectTo(BlockAndTintGetter world, BlockPos neighbourPos, BlockState neighbour,
                                      Direction direction, CallbackInfoReturnable<Boolean> cir) {
         // Treat locked pipe as encased pipes (i.e. only connect to open ends)
-        if (world.getBlockEntity(neighbourPos) instanceof FluidPipeBlockEntity pipeBlockEntity
-                && pipeBlockEntity.getData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get())) {
+        if (world.getBlockEntity(neighbourPos) instanceof FluidPipeBlockEntity pipeEntity
+                && PipeWrenchItem.isLocked(pipeEntity)) {
             FluidTransportBehaviour transport = BlockEntityBehaviour.get(world, neighbourPos, FluidTransportBehaviour.TYPE);
             if (transport == null) {
                 cir.setReturnValue(false);
@@ -38,8 +38,8 @@ public abstract class FluidPipeBlockMixin {
     public void updateBlockState(BlockState state, Direction preferredDirection, @Nullable Direction ignore,
                                        BlockAndTintGetter world, BlockPos pos, CallbackInfoReturnable<BlockState> cir) {
         // Cancel self update when locked
-        if (world.getBlockEntity(pos) instanceof FluidPipeBlockEntity pipeBlockEntity
-                && pipeBlockEntity.getData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get())) {
+        if (world.getBlockEntity(pos) instanceof FluidPipeBlockEntity pipeEntity
+                && PipeWrenchItem.isLocked(pipeEntity)) {
             cir.setReturnValue(state);
             cir.cancel();
         }
