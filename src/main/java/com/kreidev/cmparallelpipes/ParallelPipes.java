@@ -7,7 +7,6 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -42,17 +41,13 @@ public class ParallelPipes {
     private static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister
             .create(NeoForgeRegistries.ATTACHMENT_TYPES, MOD_ID);
 
-    // Serialization via codec
     public static final Supplier<AttachmentType<Boolean>> LOCKED_DATA_ATTACHMENT = ATTACHMENT_TYPES.register(
             "locked", () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL).build());
 
     public ParallelPipes(IEventBus modEventBus, ModContainer modContainer) {
-        modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         REGISTRATE.registerEventListeners(modEventBus);
         ATTACHMENT_TYPES.register(modEventBus);
         modEventBus.addListener(ParallelPipes::clientInit);
-        modEventBus.addListener(ClientConfig::onLoad);
-        modEventBus.addListener(ClientConfig::onReload);
         // Client events at ClientHandler
     }
 
