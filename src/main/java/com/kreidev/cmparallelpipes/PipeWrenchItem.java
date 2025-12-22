@@ -7,6 +7,7 @@ import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -14,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -90,6 +92,7 @@ public class PipeWrenchItem extends Item {
                     }
                 }
             }
+            playLockingSound(level, pos);
             return InteractionResult.SUCCESS;
         }
 
@@ -113,6 +116,13 @@ public class PipeWrenchItem extends Item {
             }
         }
         return null;
+    }
+
+    @SuppressWarnings("deprecation")
+    public static void playLockingSound(Level level, BlockPos pos) {
+        BlockState newState = level.getBlockState(pos);
+        SoundType soundType = newState.getSoundType();
+        level.playSound(null, pos, soundType.getPlaceSound(), SoundSource.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
     }
 
     public static final Direction[] DIRECTIONS = Direction.values();
