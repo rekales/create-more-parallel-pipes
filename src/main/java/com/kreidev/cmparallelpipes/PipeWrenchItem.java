@@ -77,25 +77,17 @@ public class PipeWrenchItem extends Item {
                     if (!level.isClientSide()) {
                         Direction segment = getSegment(blockState, pos, context.getClickLocation());
                         if (segment != null) {
-                            BlockState state = blockState.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(segment), false);
-
-                            // See if it has enough connections
-                            Direction connectedDirection = null;
+                            int endPoints = 0;
                             for (Direction d : Iterate.directions) {
-                                if (FluidPipeBlock.isOpenAt(state, d)) {
-                                    if (connectedDirection != null) {
-                                        connectedDirection = null;
-                                        break;
-                                    }
-                                    connectedDirection = d;
+                                if (FluidPipeBlock.isOpenAt(blockState, d)) {
+                                    endPoints++;
                                 }
                             }
 
-                            // Add opposite end if only one connection
-                            if (connectedDirection != null)
-                                state = state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(connectedDirection.getOpposite()), true);
-
-                            level.setBlockAndUpdate(pos, state);
+                            if (endPoints > 2) {
+                                BlockState state = blockState.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(segment), false);
+                                level.setBlockAndUpdate(pos, state);
+                            }
                         } else {
                             segment = context.getClickedFace();
                             level.setBlockAndUpdate(pos, blockState.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(segment), true));

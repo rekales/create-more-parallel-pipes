@@ -79,27 +79,35 @@ public class ClientHandler {
             }
 
             // Render pipe segment highlight
-            if (!player.isCrouching()
-                    && player.pick(player.blockInteractionRange(), 0.0F, false) instanceof BlockHitResult hit
+            if (player.pick(player.blockInteractionRange(), 0.0F, false) instanceof BlockHitResult hit
                     && level.getBlockEntity(hit.getBlockPos()) instanceof FluidPipeBlockEntity pipeEntity
                     && PipeWrenchItem.isLocked(pipeEntity)) {
-                BlockPos pos = hit.getBlockPos();
-                BlockState blockState = level.getBlockState(pos);
-                Vec3 hitLoc = hit.getLocation();
-
-                Direction segment = getSegment(blockState, pos, hitLoc);
-
-                if (segment != null) {
-                    AABB box = SEGMENT_SHAPES.get(segment).bounds().move(pos);
-                    Outliner.getInstance().showAABB(pos.relative(segment)+"highlight", box)
+                if (player.isCrouching()) {
+                    BlockPos pos = hit.getBlockPos();
+                    VoxelShape shape = pipeEntity.getBlockState().getShape(level, pos);
+                    Outliner.getInstance().showAABB(pipeEntity, shape.bounds()
+                                    .move(pos))
                             .colored(0xFF_ff5d6c)
                             .lineWidth(1 / 31f);
                 } else {
-                    segment = hit.getDirection();
-                    AABB box = SEGMENT_SHAPES.get(segment).bounds().move(pos).move(segment.step().mul(0.5f/31f));
-                    Outliner.getInstance().showAABB(pos.relative(hit.getDirection())+"highlight", box)
-                            .colored(0x9ede73)
-                            .lineWidth(1 / 31f);
+                    BlockPos pos = hit.getBlockPos();
+                    BlockState blockState = level.getBlockState(pos);
+                    Vec3 hitLoc = hit.getLocation();
+
+                    Direction segment = getSegment(blockState, pos, hitLoc);
+
+                    if (segment != null) {
+                        AABB box = SEGMENT_SHAPES.get(segment).bounds().move(pos);
+                        Outliner.getInstance().showAABB(pos.relative(segment)+"highlight", box)
+                                .colored(0xFF_ff5d6c)
+                                .lineWidth(1 / 31f);
+                    } else {
+                        segment = hit.getDirection();
+                        AABB box = SEGMENT_SHAPES.get(segment).bounds().move(pos).move(segment.step().mul(0.5f/31f));
+                        Outliner.getInstance().showAABB(pos.relative(hit.getDirection())+"highlight", box)
+                                .colored(0x9ede73)
+                                .lineWidth(1 / 31f);
+                    }
                 }
             }
         } else {
