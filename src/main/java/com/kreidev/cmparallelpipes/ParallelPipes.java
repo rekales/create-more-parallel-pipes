@@ -58,6 +58,4 @@ public class ParallelPipes {
     public static void clientInit(final FMLClientSetupEvent event) {
         PonderIndex.addPlugin(new PonderScenes());
     }
-
-    // TODO: Ponder about pipe outline
 }
