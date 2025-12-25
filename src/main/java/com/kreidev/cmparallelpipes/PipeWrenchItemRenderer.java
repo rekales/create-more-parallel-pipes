@@ -11,9 +11,12 @@ import net.createmod.catnip.animation.AnimationTickHolder;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import static com.kreidev.cmparallelpipes.ParallelPipes.resLoc;
 
+@OnlyIn(Dist.CLIENT)
 public class PipeWrenchItemRenderer extends CustomRenderedItemModelRenderer {
     protected static final PartialModel GEAR = PartialModel.of(resLoc("item/pipe_wrench_gear"));
 
