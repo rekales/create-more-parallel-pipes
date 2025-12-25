@@ -36,6 +36,7 @@ public class ParallelPipes {
 
     public static final ItemEntry<PipeWrenchItem> PIPE_WRENCH_ITEM = REGISTRATE
             .item("pipe_wrench", PipeWrenchItem::new)
+            .properties(p -> p.stacksTo(1))
             .register();
 
     private static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister
