@@ -21,22 +21,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Map;
 import java.util.function.Consumer;
-
 
 public class PipeWrenchItem extends Item {
     public PipeWrenchItem(Properties properties) {
         super(properties);
     }
 
-    @SuppressWarnings("removal")
     @Override
     @OnlyIn(Dist.CLIENT)
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
@@ -44,7 +40,7 @@ public class PipeWrenchItem extends Item {
     }
 
     @Override
-    public @NotNull InteractionResult onItemUseFirst(@NotNull ItemStack stack, UseOnContext context) {
+    public InteractionResult onItemUseFirst( ItemStack stack, UseOnContext context) {
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
         BlockState blockState = level.getBlockState(pos);
@@ -104,15 +100,16 @@ public class PipeWrenchItem extends Item {
     }
 
     public static void setLocked(FluidPipeBlockEntity pipeEntity, boolean locked) {
-        pipeEntity.setData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get(), locked);
+//        pipeEntity.setData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get(), locked);
 
     }
 
     public static boolean isLocked(FluidPipeBlockEntity pipeEntity) {
-        return pipeEntity.getData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get());
+//        return pipeEntity.getData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get());
+        return false;
     }
 
-    public static @Nullable Direction getSegment(BlockState state, BlockPos pos, Vec3 hitLocation) {
+    public static Direction getSegment(BlockState state, BlockPos pos, Vec3 hitLocation) {
         for (Direction direction : DIRECTIONS) {
             if (!FluidPipeBlock.isOpenAt(state, direction)) continue;
             if (SEGMENT_SHAPES.get(direction).bounds().inflate(0.01).move(pos).contains(hitLocation)) {
@@ -122,7 +119,6 @@ public class PipeWrenchItem extends Item {
         return null;
     }
 
-    @SuppressWarnings("deprecation")
     public static void playLockingSound(Level level, BlockPos pos) {
         BlockState newState = level.getBlockState(pos);
         SoundType soundType = newState.getSoundType();

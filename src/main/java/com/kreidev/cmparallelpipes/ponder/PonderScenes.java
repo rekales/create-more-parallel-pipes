@@ -19,17 +19,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.AABB;
-import org.jetbrains.annotations.NotNull;
 
 public class PonderScenes implements PonderPlugin {
     @Override
-    public @NotNull String getModId() {
+    public String getModId() {
         return ParallelPipes.MOD_ID;
     }
 
     @Override
     public void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
-        PonderSceneRegistrationHelper<ItemProviderEntry<?,?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+        PonderSceneRegistrationHelper<ItemProviderEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
         HELPER.addStoryBoard(ParallelPipes.PIPE_WRENCH_ITEM, "locked_pipe", PonderScenes::lockedPipe);
         HELPER.addStoryBoard(ParallelPipes.PIPE_WRENCH_ITEM, "outline_segments", PonderScenes::outlineSegment);
     }

@@ -9,7 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -35,7 +34,7 @@ public abstract class FluidPipeBlockMixin {
     }
 
     @Inject(method = "updateBlockState", at = @At("HEAD"), cancellable = true)
-    public void updateBlockState(BlockState state, Direction preferredDirection, @Nullable Direction ignore,
+    public void updateBlockState(BlockState state, Direction preferredDirection, Direction ignore,
                                        BlockAndTintGetter world, BlockPos pos, CallbackInfoReturnable<BlockState> cir) {
         // Cancel self update when locked
         if (world.getBlockEntity(pos) instanceof FluidPipeBlockEntity pipeEntity

@@ -14,11 +14,12 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -26,13 +27,13 @@ import java.util.stream.Collectors;
 import static com.kreidev.cmparallelpipes.PipeWrenchItem.*;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(modid=ParallelPipes.MOD_ID, value=Dist.CLIENT)
+@Mod.EventBusSubscriber(modid=ParallelPipes.MOD_ID, value=Dist.CLIENT)
 public class ClientHandler {
 
     public static List<FluidPipeBlockEntity> renderedBlockEntities = new ArrayList<>();
 
     @SubscribeEvent
-    public static void clientTick(ClientTickEvent.Pre event) {
+    public static void clientTick(TickEvent.ClientTickEvent event) {
         ClientLevel level = Minecraft.getInstance().level;
         Player player = Minecraft.getInstance().player;
         if (level == null) return;
@@ -79,7 +80,7 @@ public class ClientHandler {
             }
 
             // Render pipe segment highlight
-            if (player.pick(player.blockInteractionRange(), 0.0F, false) instanceof BlockHitResult hit
+            if (player.pick(player.getAttributeValue(ForgeMod.BLOCK_REACH.get()), 0.0F, false) instanceof BlockHitResult hit
                     && level.getBlockEntity(hit.getBlockPos()) instanceof FluidPipeBlockEntity pipeEntity
                     && PipeWrenchItem.isLocked(pipeEntity)) {
                 if (player.isCrouching()) {
@@ -103,7 +104,7 @@ public class ClientHandler {
                                 .lineWidth(1 / 31f);
                     } else {
                         segment = hit.getDirection();
-                        AABB box = SEGMENT_SHAPES.get(segment).bounds().move(pos).move(segment.step().mul(0.5f/31f));
+                        AABB box = SEGMENT_SHAPES.get(segment).bounds().move(pos).move(new Vec3(segment.step().mul(0.5f/31f)));
                         Outliner.getInstance().showAABB(pos.relative(hit.getDirection())+"highlight", box)
                                 .colored(0x9ede73)
                                 .lineWidth(1 / 31f);
