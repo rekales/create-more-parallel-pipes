@@ -2,10 +2,13 @@ package com.kreidev.cmparallelpipes;
 
 import com.kreidev.cmparallelpipes.ponder.PonderScenes;
 import com.simibubi.create.AllCreativeModeTabs;
+import com.simibubi.create.api.event.BlockEntityBehaviourEvent;
+import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -22,6 +25,7 @@ public class ParallelPipes {
     @SuppressWarnings("unused")
     public static final Logger LOGGER = LogUtils.getLogger();
 
+    @SuppressWarnings("DataFlowIssue")
     public static final CreateRegistrate REGISTRATE = CreateRegistrate
             .create(MOD_ID)
             .defaultCreativeTab(AllCreativeModeTabs.BASE_CREATIVE_TAB.getKey());
@@ -36,6 +40,7 @@ public class ParallelPipes {
         REGISTRATE.registerEventListeners(modEventBus);
         modEventBus.addListener(ParallelPipes::clientInit);
         // Client events at ClientHandler
+        MinecraftForge.EVENT_BUS.addGenericListener(FluidPipeBlockEntity.class, ParallelPipes::attachBehaviours);
     }
 
     public static ResourceLocation resLoc(String path) {
@@ -44,5 +49,9 @@ public class ParallelPipes {
 
     public static void clientInit(final FMLClientSetupEvent event) {
         PonderIndex.addPlugin(new PonderScenes());
+    }
+
+    public static void attachBehaviours(BlockEntityBehaviourEvent<FluidPipeBlockEntity> event) {
+        event.attach(new PipeLockingBehaviour(event.getBlockEntity()));
     }
 }

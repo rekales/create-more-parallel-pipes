@@ -87,7 +87,6 @@ public class PipeWrenchItem extends Item {
                         } else {
                             segment = context.getClickedFace();
                             level.setBlockAndUpdate(pos, blockState.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(segment), true));
-                            ParallelPipes.LOGGER.info("{} {}", segment, true);
                         }
                     }
                 }
@@ -100,12 +99,17 @@ public class PipeWrenchItem extends Item {
     }
 
     public static void setLocked(FluidPipeBlockEntity pipeEntity, boolean locked) {
-//        pipeEntity.setData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get(), locked);
-
+        PipeLockingBehaviour lockingBehaviour = pipeEntity.getBehaviour(PipeLockingBehaviour.TYPE);
+        if (lockingBehaviour != null) {
+            lockingBehaviour.setLocked(locked);
+        }
     }
 
     public static boolean isLocked(FluidPipeBlockEntity pipeEntity) {
-//        return pipeEntity.getData(ParallelPipes.LOCKED_DATA_ATTACHMENT.get());
+        PipeLockingBehaviour lockingBehaviour = pipeEntity.getBehaviour(PipeLockingBehaviour.TYPE);
+        if (lockingBehaviour != null) {
+            return lockingBehaviour.isLocked();
+        }
         return false;
     }
 
